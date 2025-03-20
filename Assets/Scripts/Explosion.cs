@@ -1,39 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    [SerializeField] private ClickHandler _clickHandler;
-    private float _explosionRadius = 3;
-    private float _explosionForse = 100;
+    [SerializeField] private Cube _cube;
 
     private void OnEnable()
     {
-        _clickHandler.ExplodeOriginal += Explode;
+        _cube.ExplodeOriginal += OnExplodeOriginal;
     }
 
     private void OnDisable()
     {
-        _clickHandler.ExplodeOriginal -= Explode;
+        _cube.ExplodeOriginal -= OnExplodeOriginal;
     }
 
-    private void Explode()
+    private void OnExplodeOriginal(Cube cube)
     {
-        foreach (Rigidbody explodableObject in GetExplodableObjects())
-            explodableObject.AddExplosionForce(_explosionForse, transform.position, _explosionRadius);
+        Explode(cube);
     }
 
-    private List<Rigidbody> GetExplodableObjects()
+    private void Explode(Cube cube)
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
-
-        List<Rigidbody> explosion = new();
-
-        foreach(Collider hit in hits)
-            if (hit.attachedRigidbody != null)
-                explosion.Add(hit.attachedRigidbody);
-
-        return explosion;
+        foreach (Cube cloneCube in cube.Clones)
+        {
+            if (cloneCube != null)
+            {
+                Rigidbody rb = cloneCube.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    Vector3 explosionDirection = (cloneCube.transform.position - cube.transform.position).normalized;
+                    rb.AddForce(explosionDirection * cube.ExplosionForce, ForceMode.Impulse);
+                }
+            }
+        }
     }
 }
