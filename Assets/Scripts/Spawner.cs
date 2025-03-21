@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _cube;
+    [SerializeField] private Explosion _explosion;
+    public event Action<Cube> ExplodeOriginal;
 
     private void OnEnable()
     {
@@ -21,25 +26,20 @@ public class Spawner : MonoBehaviour
 
     private void Replicate(Cube cube)
     {
-        int cloneProbability = UnityEngine.Random.Range(0, Cube.MaximumProbability + 1);
-        int cloneCount = UnityEngine.Random.Range(Cube.MinCountClone, Cube.MaxCountClone + 1);
+        int cloneProbability = Random.Range(0, cube.MaximumProbability + 1);
+        int cloneCount = Random.Range(cube.MinCountClone, cube.MaxCountClone + 1);
+        List<Cube> Clones = new List<Cube>();
 
         if (cloneProbability <= cube.ProbabilityOfReplication)
         {
             for (int i = 0; i < cloneCount; i++)
             {
-                GameObject copy = Instantiate(cube.gameObject);
-                Cube copyCube = copy.GetComponent<Cube>();
-
-                if (copyCube != null)
-                {
-                    copyCube.ProbabilityOfReplication /= 2;
-                    copyCube.transform.localScale = cube.transform.localScale - cube.ScaleReduction;
-                    copyCube.GetComponent<Renderer>().material.color = UnityEngine.Random.ColorHSV();
-
-                    cube.Clones.Add(copyCube);
-                }
+                Cube copyCube = Instantiate(cube);
+                copyCube.ProbabilityOfReplication /= 2;
+                copyCube.transform.localScale = cube.transform.localScale - cube.ScaleReduction;
+                Clones.Add(copyCube);
             }
+            _explosion.OnExplodeOriginal(Clones);
         }
     }
 }

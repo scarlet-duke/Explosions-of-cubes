@@ -1,35 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    [SerializeField] private Cube _cube;
+    [SerializeField] private float _explosionRadius = 3f;
+    [SerializeField] private float _explosionForce = 100f;
 
-    private void OnEnable()
+    public void OnExplodeOriginal(List<Cube> Clones)
     {
-        _cube.ExplodeOriginal += OnExplodeOriginal;
-    }
-
-    private void OnDisable()
-    {
-        _cube.ExplodeOriginal -= OnExplodeOriginal;
-    }
-
-    private void OnExplodeOriginal(Cube cube)
-    {
-        Explode(cube);
-    }
-
-    private void Explode(Cube cube)
-    {
-        foreach (Cube cloneCube in cube.Clones)
+        foreach (Cube cloneCube in Clones)
         {
             if (cloneCube != null)
             {
-                Rigidbody rb = cloneCube.GetComponent<Rigidbody>();
-                if (rb != null)
+                Rigidbody rigidBody = cloneCube.GetComponent<Rigidbody>();
+                if (rigidBody != null)
                 {
-                    Vector3 explosionDirection = (cloneCube.transform.position - cube.transform.position).normalized;
-                    rb.AddForce(explosionDirection * cube.ExplosionForce, ForceMode.Impulse);
+                    Vector3 explosionDirection = (cloneCube.transform.position - transform.position).normalized;
+                    rigidBody.AddForce(explosionDirection * _explosionForce, ForceMode.Impulse);
                 }
             }
         }

@@ -326,8 +326,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _probabilityOfReplication: 100
   _scaleReduction: {x: 0.5, y: 0.5, z: 0.5}
-  _explosionRadius: 3
-  _explosionForce: 100
+  MaximumProbability: 100
+  MinCountClone: 2
+  MaxCountClone: 6
 --- !u!114 &190046010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cube: {fileID: 190046009}
+  _explosion: {fileID: 190046013}
 --- !u!114 &190046013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,7 +355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89f3d5eeebe4dd4d8ad11e476449343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cube: {fileID: 190046009}
+  _explosionRadius: 3
+  _explosionForce: 100
 --- !u!1 &401083174
 GameObject:
   m_ObjectHideFlags: 0
