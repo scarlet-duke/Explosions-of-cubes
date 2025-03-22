@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -6,40 +5,25 @@ using Random = UnityEngine.Random;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _cube;
-    [SerializeField] private Explosion _explosion;
-    public event Action<Cube> ExplodeOriginal;
 
-    private void OnEnable()
+    public List<Cube> Replicate(Cube cube)
     {
-        _cube.CreateCopy += OnCreateCopy;
-    }
-
-    private void OnDisable()
-    {
-        _cube.CreateCopy -= OnCreateCopy;
-    }
-
-    private void OnCreateCopy(Cube cube)
-    {
-        Replicate(cube);
-    }
-
-    private void Replicate(Cube cube)
-    {
+        int decreaseProbability = 2;
         int cloneProbability = Random.Range(0, cube.MaximumProbability + 1);
         int cloneCount = Random.Range(cube.MinCountClone, cube.MaxCountClone + 1);
-        List<Cube> Clones = new List<Cube>();
+        List<Cube> clones = new List<Cube>();
 
         if (cloneProbability <= cube.ProbabilityOfReplication)
         {
             for (int i = 0; i < cloneCount; i++)
             {
                 Cube copyCube = Instantiate(cube);
-                copyCube.ProbabilityOfReplication /= 2;
+                copyCube.ProbabilityOfReplication /= decreaseProbability;
                 copyCube.transform.localScale = cube.transform.localScale - cube.ScaleReduction;
-                Clones.Add(copyCube);
+                clones.Add(copyCube);
             }
-            _explosion.OnExplodeOriginal(Clones);
         }
+
+        return clones;
     }
 }

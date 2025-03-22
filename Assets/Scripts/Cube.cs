@@ -4,28 +4,22 @@ using Random = UnityEngine.Random;
 
 public class Cube : MonoBehaviour
 {
-    public event Action<Cube> CreateCopy;
-
     [SerializeField] private int _probabilityOfReplication = 100;
     [SerializeField] private Vector3 _scaleReduction = new Vector3(0.5f, 0.5f, 0.5f);
-
-    public int MaximumProbability = 100;
-    public int MinCountClone = 2;
-    public int MaxCountClone = 6;
+    [SerializeField] private int _maximumProbability = 100;
+    [SerializeField] private int _minCountClone = 2;
+    [SerializeField] private int _maxCountClone = 6;
 
     public int ProbabilityOfReplication
     {
         get => _probabilityOfReplication;
-        set => _probabilityOfReplication = Mathf.Clamp(value, 0, MaximumProbability);
+        set => _probabilityOfReplication = Mathf.Clamp(value, 0, _maximumProbability);
     }
 
     public Vector3 ScaleReduction => _scaleReduction;
-
-    private void OnMouseDown()
-    {
-        CreateCopy?.Invoke(this);
-        Destroy(gameObject);
-    }
+    public int MaxCountClone => _maxCountClone;
+    public int MinCountClone => _minCountClone;
+    public int MaximumProbability => _maximumProbability;
 
     private void Awake()
     {
