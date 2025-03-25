@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _cube;
+    [SerializeField] private float _explosionRadius = 3f;
+    [SerializeField] private float _explosionForce = 100f;
 
     public List<Cube> Replicate(Cube cube)
     {
@@ -22,6 +24,10 @@ public class Spawner : MonoBehaviour
                 copyCube.transform.localScale = cube.transform.localScale - cube.ScaleReduction;
                 clones.Add(copyCube);
             }
+        }
+        else
+        {
+            clones.Add(cube);
         }
 
         return clones;
