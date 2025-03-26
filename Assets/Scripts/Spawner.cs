@@ -25,10 +25,6 @@ public class Spawner : MonoBehaviour
                 clones.Add(copyCube);
             }
         }
-        else
-        {
-            clones.Add(cube);
-        }
 
         return clones;
     }

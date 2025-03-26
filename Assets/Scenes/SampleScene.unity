@@ -949,6 +949,7 @@ GameObject:
   - component: {fileID: 963194231}
   - component: {fileID: 963194232}
   - component: {fileID: 963194233}
+  - component: {fileID: 963194234}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1042,8 +1043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f2aa4b38d69f34392e093fa915f04e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawner: {fileID: 963194232}
-  _explosion: {fileID: 963194233}
+  _cubeClickHandler: {fileID: 963194234}
 --- !u!114 &963194232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1071,8 +1071,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89f3d5eeebe4dd4d8ad11e476449343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionRadius: 3
-  _explosionForce: 100
+  _explosionRadius: 15
+  _explosionForce: 500
+--- !u!114 &963194234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331abbe4e9ecead47b976daba0c93c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawner: {fileID: 963194232}
+  _explosion: {fileID: 963194233}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

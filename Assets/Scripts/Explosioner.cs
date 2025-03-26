@@ -3,37 +3,31 @@ using UnityEngine;
 
 public class Explosioner : MonoBehaviour
 {
-    [SerializeField] private float _explosionRadius = 3f;
-    [SerializeField] private float _explosionForce = 100f;
-    int explosionModifier = 5;
+    [SerializeField] private float _explosionRadius = 15f;
+    [SerializeField] private float _explosionForce = 500f;
 
     public void Explode(List<Rigidbody> rigidbodies)
     {
-        if(rigidbodies.Count > 1)
+        foreach (Rigidbody rigidbody in rigidbodies)
         {
-            foreach (Rigidbody rigidbody in rigidbodies)
+            if (rigidbody != null)
             {
-                if (rigidbody != null)
-                {
-                    Vector3 explosionDirection = (rigidbody.transform.position - transform.position).normalized;
-                    rigidbody.AddForce(explosionDirection * _explosionForce, ForceMode.Impulse);
-                }
+                Vector3 explosionDirection = (rigidbody.transform.position - transform.position).normalized;
+                rigidbody.AddForce(explosionDirection * _explosionForce, ForceMode.Impulse);
             }
         }
-        else
+    }
+
+    public void Explode(Cube cube)
+    {
+        Collider[] colliders = Physics.OverlapSphere(cube.transform.position, _explosionRadius);
+
+        foreach (Collider hit in colliders)
         {
-            Collider[] colliders = Physics.OverlapSphere(rigidbodies[0].transform.position, _explosionRadius * explosionModifier);
-
-            foreach (Collider hit in colliders)
+            if (hit.TryGetComponent(out Rigidbody rigidbody))
             {
-                Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
-
-                if (rigidbody != null)
-                {
-                    rigidbody.AddExplosionForce(_explosionForce * explosionModifier, rigidbodies[0].transform.position, _explosionRadius * explosionModifier);
-                }
+                rigidbody.AddExplosionForce(_explosionForce, cube.transform.position, _explosionRadius);
             }
         }
-
     }
 }
